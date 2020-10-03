@@ -16,7 +16,7 @@ describe('App', () => {
       .expect('Content-Type', /json/)
       .expect(200);
 
-    expect(response.body.message).toEqual('POPS !!!');
+    expect(response.body.message).toEqual('List of Funko Pop.');
     afterAll(() => mongoose.disconnect());
   });
 });

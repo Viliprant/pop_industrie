@@ -4,12 +4,22 @@ const router = express.Router();
 
 const connect = require('../../db');
 
-router.get('/pops', (req, res) => {
+const Pop = require('./pops.model');
+
+router.get('/pops', (req, res, next) => {
   connect(
-    () => {
-      res.status(200).json({
-        message: 'POPS !!!',
-      });
+    async () => {
+      await Pop.find({}).select('-_id')
+        .then((pops) => {
+          res.status(200).json({
+            message: 'List of Funko Pop.',
+            data: pops,
+          });
+        })
+        .catch((err) => {
+          res.status(500);
+          next(err);
+        });
     }, res,
   );
 });
