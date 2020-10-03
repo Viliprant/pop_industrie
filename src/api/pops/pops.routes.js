@@ -31,7 +31,7 @@ router.post('/pop', (req, res, next) => {
       await pop.save()
         .then((inserted) => {
           res.status(200).json({
-            message: 'List of Funko Pop.',
+            message: 'Pop added.',
             // eslint-disable-next-line no-underscore-dangle
             data: { _id: inserted._id },
           });
@@ -44,14 +44,15 @@ router.post('/pop', (req, res, next) => {
   );
 });
 
-router.get('/pop/:id', (req, res, next) => {
+router.get('/pop/:number_funko', (req, res, next) => {
   connect(
     async () => {
-      await Pop.find({ number_funko: req.params.id }).select('-_id -__v')
+      const popNumber = req.params.number_funko;
+      await Pop.find({ number_funko: popNumber }).select('-_id -__v')
         .then((pops) => {
           if (pops.length === 0) { next(new Error('Unknow Funko Pop')); } else {
             res.status(200).json({
-              message: 'List of Funko Pop.',
+              message: `Pop ${popNumber}`,
               data: pops,
             });
           }
